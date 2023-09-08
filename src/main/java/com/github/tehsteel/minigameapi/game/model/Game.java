@@ -138,15 +138,14 @@ public abstract class Game {
 	/**
 	 * Retrieves data from a Game object based on a specified key and class type.
 	 *
-	 * @param game  The Game object to retrieve data from.
 	 * @param key   The key used to access the desired data.
 	 * @param clazz The class type that the retrieved data should be cast to.
 	 * @param <T>   The generic type for the return value.
 	 * @return The retrieved data casted to the specified class type, or null if the data is not of the correct type.
 	 */
 	@Nullable
-	public <T> T getData(final Game game, final Object key, final Class<T> clazz) {
-		final Object value = game.getGameData().get(key);
+	public <T> T getData(final Object key, final Class<T> clazz) {
+		final Object value = getGameData().get(key);
 
 		return clazz.isInstance(value) ? clazz.cast(value) : null;
 	}
