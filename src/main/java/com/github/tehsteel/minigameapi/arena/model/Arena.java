@@ -188,16 +188,18 @@ public final class Arena {
 	public void serialize() throws ArenaException {
 		config.set("ArenaData.name", name);
 
-		if (waitingLocation != null)
+		if (waitingLocation != null) {
 			config.set("ArenaData.waitingLocation", waitingLocation.serialize());
+		}
 
 		config.set("ArenaData.maxPlayers", maxPlayers);
 		config.set("ArenaData.minPlayers", minPlayers);
 
-		if (spawnLocations != null && !spawnLocations.isEmpty())
-			for (int i = 0; i < spawnLocations.size(); i++)
+		if (spawnLocations != null && !spawnLocations.isEmpty()) {
+			for (int i = 0; i < spawnLocations.size(); i++) {
 				config.set("ArenaData.spawnLocations." + i, spawnLocations.stream().toList().get(i).serialize());
-
+			}
+		}
 		saveConfig();
 	}
 }
