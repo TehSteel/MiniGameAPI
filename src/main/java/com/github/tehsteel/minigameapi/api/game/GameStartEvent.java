@@ -13,7 +13,7 @@ public final class GameStartEvent extends GameEvent {
 	 * Indicates if the game was forcefully started.
 	 */
 	@Getter
-	private boolean forceStart;
+	private final boolean forceStart;
 
 	/**
 	 * Constructs a GameStartEvent.

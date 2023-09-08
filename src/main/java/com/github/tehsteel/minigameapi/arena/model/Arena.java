@@ -17,11 +17,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Arena class
- *
- * @author TehSteel
- */
 public final class Arena {
 
 	@Getter private final String name;

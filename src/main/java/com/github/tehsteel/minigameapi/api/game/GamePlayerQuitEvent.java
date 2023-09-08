@@ -14,7 +14,7 @@ public class GamePlayerQuitEvent extends GameEvent {
 	 * The player who quit or left the game.
 	 */
 	@Getter
-	private Player player;
+	private final Player player;
 
 	/**
 	 * Constructs a GamePlayerQuitEvent.

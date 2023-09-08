@@ -19,7 +19,7 @@ import java.util.Set;
 public abstract class Game {
 
 	@Getter private final Arena arena;
-	@Getter private Set<Player> players = new HashSet<>();
+	@Getter private final Set<Player> players = new HashSet<>();
 	@Getter @Setter private GameState state = GameState.WAITING;
 	@Getter @Setter private int countdown = 10;
 

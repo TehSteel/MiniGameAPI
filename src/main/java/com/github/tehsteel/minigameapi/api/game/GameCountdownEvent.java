@@ -14,13 +14,13 @@ public class GameCountdownEvent extends GameEvent {
 	 * The number of seconds in the countdown.
 	 */
 	@Getter
-	private int seconds;
+	private final int seconds;
 
 	/**
 	 * Indicates if the countdown was forcefully started.
 	 */
 	@Getter
-	private boolean forceStart;
+	private final boolean forceStart;
 
 	/**
 	 * Constructs a GameCountdownEvent.

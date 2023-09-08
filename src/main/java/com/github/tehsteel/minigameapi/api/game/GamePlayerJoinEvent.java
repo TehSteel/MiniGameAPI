@@ -14,7 +14,7 @@ public class GamePlayerJoinEvent extends GameEvent {
 	 * The player who joined the game.
 	 */
 	@Getter
-	private Player player;
+	private final Player player;
 
 	/**
 	 * Constructs a GamePlayerJoinEvent.
