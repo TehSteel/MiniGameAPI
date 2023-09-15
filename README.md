@@ -13,6 +13,7 @@
 - [License](#license)
 
 ## Getting Started
+You may need to compile it from source before using.
 
 ```xml
 <dependency>

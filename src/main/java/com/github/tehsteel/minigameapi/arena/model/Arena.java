@@ -15,9 +15,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-public final class Arena {
+public class Arena {
 
 	@Getter private final String name;
 	@Getter @Setter private CustomLocation waitingLocation;
@@ -100,16 +101,18 @@ public final class Arena {
 		final Arena arena = new Arena(config.getString("ArenaData.name"));
 
 		if (config.getString("ArenaData.waitingLocation") != null)
-			arena.setWaitingLocation(CustomLocation.deserialize(config.getString("ArenaData.waitingLocation")));
+			arena.setWaitingLocation(CustomLocation.deserialize(Objects.requireNonNull(config.getString("ArenaData.waitingLocation"))));
 
 		arena.setMaxPlayers(config.getInt("ArenaData.maxPlayers"));
 		arena.setMinPlayers(config.getInt("ArenaData.minPlayers"));
 
 		final ConfigurationSection section = config.getConfigurationSection("ArenaData.spawnLocations");
 
-		if (section != null)
-			for (int i = 0; i < section.getKeys(false).size(); i++)
-				arena.getSpawnLocations().add(CustomLocation.deserialize(section.getString(String.valueOf(i))));
+		if (section != null) {
+			for (int i = 0; i < section.getKeys(false).size(); i++) {
+				arena.getSpawnLocations().add(CustomLocation.deserialize(Objects.requireNonNull(section.getString(String.valueOf(i)))));
+			}
+		}
 
 		return arena;
 	}
