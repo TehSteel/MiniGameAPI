@@ -7,6 +7,7 @@ import com.github.tehsteel.minigameapi.arena.ArenaState;
 import com.github.tehsteel.minigameapi.util.CustomLocation;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,11 +22,11 @@ import java.util.Set;
 public class Arena {
 
 	@Getter private final String name;
-	@Getter @Setter private CustomLocation waitingLocation;
+	@Getter @Setter private Location waitingLocation;
 	@Getter @Setter private int maxPlayers;
 	@Getter @Setter private int minPlayers;
 	@Getter @Setter private ArenaState state = ArenaState.READY;
-	@Getter @Setter private Set<CustomLocation> spawnLocations = new HashSet<>();
+	@Getter @Setter private Set<Location> spawnLocations = new HashSet<>();
 
 	@Getter private File configFile;
 	@Getter private YamlConfiguration config = new YamlConfiguration();
@@ -77,7 +78,7 @@ public class Arena {
 	 * @param minPlayers      The minimum number of players required to start the game.
 	 * @throws RuntimeException If an ArenaException occurs during arena file creation.
 	 */
-	public Arena(final String name, final CustomLocation waitingLocation, final int maxPlayers, final int minPlayers) {
+	public Arena(final String name, final Location waitingLocation, final int maxPlayers, final int minPlayers) {
 		this.name = name;
 		this.waitingLocation = waitingLocation;
 		this.maxPlayers = maxPlayers;
@@ -101,7 +102,7 @@ public class Arena {
 		final Arena arena = new Arena(config.getString("ArenaData.name"));
 
 		if (config.getString("ArenaData.waitingLocation") != null)
-			arena.setWaitingLocation(CustomLocation.deserialize(Objects.requireNonNull(config.getString("ArenaData.waitingLocation"))));
+			arena.setWaitingLocation(CustomLocation.deserialize(Objects.requireNonNull(config.getString("ArenaData.waitingLocation"))).toBukkitLocation());
 
 		arena.setMaxPlayers(config.getInt("ArenaData.maxPlayers"));
 		arena.setMinPlayers(config.getInt("ArenaData.minPlayers"));
@@ -110,7 +111,7 @@ public class Arena {
 
 		if (section != null) {
 			for (int i = 0; i < section.getKeys(false).size(); i++) {
-				arena.getSpawnLocations().add(CustomLocation.deserialize(Objects.requireNonNull(section.getString(String.valueOf(i)))));
+				arena.getSpawnLocations().add(CustomLocation.deserialize(Objects.requireNonNull(section.getString(String.valueOf(i)))).toBukkitLocation());
 			}
 		}
 

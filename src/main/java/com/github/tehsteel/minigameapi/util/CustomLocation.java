@@ -71,7 +71,7 @@ public final class CustomLocation {
 	 * @return The serialized string.
 	 */
 	public String serialize() {
-		return world + " " + x + " " + y + " " + z + " " + yaw + " " + pitch + " ";
+		return world + " " + x + " " + y + " " + z + " " + yaw + " " + pitch;
 	}
 
 }
