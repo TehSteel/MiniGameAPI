@@ -10,9 +10,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import javax.annotation.Nullable;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -112,18 +110,18 @@ public abstract class Game {
 	}
 
 	/**
+	 * Resets the game to its initial state, allowing for a fresh start.
+	 * This method should clear any in-progress game data and reinitialize
+	 * all relevant game parameters and variables.
+	 */
+	public abstract void resetGame();
+
+	/**
 	 * Determines whether the game should end based on specific conditions.
 	 *
 	 * @return True if the game should end, otherwise false.
 	 */
 	public abstract boolean shouldGameEnd();
-
-	/**
-	 * Retrieves the game data in the form of a Map.
-	 *
-	 * @return A Map containing the game data. The keys and values may vary depending on the specific game implementation.
-	 */
-	public abstract Map<?, ?> getGameData();
 
 	/**
 	 * Fires a custom GameEvent by calling the Bukkit event system.
@@ -133,21 +131,6 @@ public abstract class Game {
 	 */
 	private <T extends GameEvent> void fireGameEvent(final T event) {
 		Bukkit.getServer().getPluginManager().callEvent(event);
-	}
-
-	/**
-	 * Retrieves data from a Game object based on a specified key and class type.
-	 *
-	 * @param key   The key used to access the desired data.
-	 * @param clazz The class type that the retrieved data should be cast to.
-	 * @param <T>   The generic type for the return value.
-	 * @return The retrieved data casted to the specified class type, or null if the data is not of the correct type.
-	 */
-	@Nullable
-	public <T> T getData(final Object key, final Class<T> clazz) {
-		final Object value = getGameData().get(key);
-
-		return clazz.isInstance(value) ? clazz.cast(value) : null;
 	}
 
 	@Override
