@@ -16,11 +16,19 @@
 You may need to compile it from source before using.
 
 ```xml
-<dependency>
-    <groupId>com.github.tehsteel</groupId>
-    <artifactId>minigameapi</artifactId>
-    <version>1.0.0</version>
-</dependency>
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+
+
+    <dependency>
+	    <groupId>com.github.tehsteel</groupId>
+	    <artifactId>minigameapi</artifactId>
+	    <version>VERSION</version>
+	</dependency>
 ```
 
 ### Initialize the Library
