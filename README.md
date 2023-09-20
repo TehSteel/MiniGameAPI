@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue.svg)
 
-> MiniGameAPI Java library designed to simplify the development of mini games within Minecraft plugins.
+> MiniGameAPI Java library designed to simplify the development of mini-games within Minecraft plugins.
 
 
 ## Table of Contents
@@ -13,7 +13,7 @@
 - [License](#license)
 
 ## Getting Started
-You may need to compile it from source before using.
+You may need to compile it from the source before using it.
 
 ```xml
 	<repositories>
@@ -23,12 +23,13 @@ You may need to compile it from source before using.
 		</repository>
 	</repositories>
 
-
-    <dependency>
-	    <groupId>com.github.tehsteel</groupId>
-	    <artifactId>minigameapi</artifactId>
-	    <version>VERSION</version>
-	</dependency>
+        <dependency>
+            <groupId>com.github.tehsteel</groupId>
+            <artifactId>minigameapi</artifactId>
+            <!-- Make sure it's up-to-date -->
+            <version>VERSION</version>
+            <scope>compile</scope>
+        </dependency>
 ```
 
 ### Initialize the Library
