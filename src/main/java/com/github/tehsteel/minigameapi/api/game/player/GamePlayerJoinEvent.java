@@ -1,4 +1,4 @@
-package com.github.tehsteel.minigameapi.api.game;
+package com.github.tehsteel.minigameapi.api.game.player;
 
 import com.github.tehsteel.minigameapi.api.game.model.GameEvent;
 import com.github.tehsteel.minigameapi.game.model.Game;
@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
 /**
  * Represents an event when a player joins a game.
  */
+@Getter
 public class GamePlayerJoinEvent extends GameEvent {
 
 	/**
 	 * The player who joined the game.
 	 */
-	@Getter
 	private final Player player;
 
 	/**

@@ -8,12 +8,12 @@ import lombok.Getter;
  * Represents an event indicating the end of a game.
  * Extends the base GameEvent class.
  */
+@Getter
 public class GameEndEvent extends GameEvent {
 
 	/**
 	 * Indicates whether the game was forcefully stopped.
 	 */
-	@Getter
 	private final boolean forceStopped;
 
 	/**

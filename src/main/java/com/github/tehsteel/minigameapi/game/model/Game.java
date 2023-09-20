@@ -1,7 +1,14 @@
 package com.github.tehsteel.minigameapi.game.model;
 
-import com.github.tehsteel.minigameapi.api.game.*;
+import com.github.tehsteel.minigameapi.api.game.GameCountdownEvent;
+import com.github.tehsteel.minigameapi.api.game.GameEndEvent;
+import com.github.tehsteel.minigameapi.api.game.GameStartEvent;
 import com.github.tehsteel.minigameapi.api.game.model.GameEvent;
+import com.github.tehsteel.minigameapi.api.game.player.GamePlayerJoinEvent;
+import com.github.tehsteel.minigameapi.api.game.player.GamePlayerLoseEvent;
+import com.github.tehsteel.minigameapi.api.game.player.GamePlayerQuitEvent;
+import com.github.tehsteel.minigameapi.api.game.player.GamePlayerWinEvent;
+import com.github.tehsteel.minigameapi.arena.ArenaState;
 import com.github.tehsteel.minigameapi.arena.model.Arena;
 import com.github.tehsteel.minigameapi.game.GameState;
 import lombok.Getter;
@@ -35,6 +42,8 @@ public abstract class Game {
 	public final void startGame(final boolean forceStart) {
 		if (players.size() < arena.getMinPlayers() && !forceStart) return;
 		fireGameEvent(new GameStartEvent(this, forceStart));
+		getArena().setState(ArenaState.INGAME);
+		setState(GameState.INGAME);
 	}
 
 	/**
@@ -49,6 +58,8 @@ public abstract class Game {
 	public final void startCountdown(final boolean forceStart) {
 		if (players.size() < arena.getMinPlayers() && !forceStart) return;
 		fireGameEvent(new GameCountdownEvent(this, countdown, forceStart));
+		setState(GameState.COUNTDOWN);
+		getArena().setState(ArenaState.INGAME);
 	}
 
 	/**
@@ -63,7 +74,7 @@ public abstract class Game {
 	public final void endGame(final boolean forceStop) {
 		if (!forceStop && !shouldGameEnd()) return;
 		fireGameEvent(new GameEndEvent(this, forceStop));
-		state = GameState.ENDGAME;
+		setState(GameState.ENDGAME);
 	}
 
 	/**
@@ -74,6 +85,7 @@ public abstract class Game {
 	 */
 	public final void forceStartGame() {
 		fireGameEvent(new GameStartEvent(this, true));
+		getArena().setState(ArenaState.INGAME);
 	}
 
 	/**
@@ -110,6 +122,20 @@ public abstract class Game {
 	}
 
 	/**
+	 * @param player
+	 */
+	public final void onPlayerWin(final Player player) {
+		fireGameEvent(new GamePlayerWinEvent(this, player));
+	}
+
+	/**
+	 * @param player
+	 */
+	public final void onPlayerLose(final Player player) {
+		fireGameEvent(new GamePlayerLoseEvent(this, player));
+	}
+
+	/**
 	 * Resets the game to its initial state, allowing for a fresh start.
 	 * This method should clear any in-progress game data and reinitialize
 	 * all relevant game parameters and variables.
@@ -130,6 +156,7 @@ public abstract class Game {
 	 * @param <T>   The type of GameEvent to be fired.
 	 */
 	private <T extends GameEvent> void fireGameEvent(final T event) {
+		if (event.isCancelled()) return;
 		Bukkit.getServer().getPluginManager().callEvent(event);
 	}
 

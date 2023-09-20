@@ -8,18 +8,17 @@ import lombok.Getter;
  * Represents an event for counting down in a game.
  * This event is triggered when the startCountdown method is called.
  */
+@Getter
 public class GameCountdownEvent extends GameEvent {
 
 	/**
 	 * The number of seconds in the countdown.
 	 */
-	@Getter
 	private final int seconds;
 
 	/**
 	 * Indicates if the countdown was forcefully started.
 	 */
-	@Getter
 	private final boolean forceStart;
 
 	/**

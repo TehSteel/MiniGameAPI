@@ -7,12 +7,12 @@ import lombok.Getter;
 /**
  * Represents an event when a game starts.
  */
+@Getter
 public final class GameStartEvent extends GameEvent {
 
 	/**
 	 * Indicates if the game was forcefully started.
 	 */
-	@Getter
 	private final boolean forceStart;
 
 	/**
