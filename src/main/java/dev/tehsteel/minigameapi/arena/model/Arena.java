@@ -1,10 +1,13 @@
-package com.github.tehsteel.minigameapi.arena.model;
+package dev.tehsteel.minigameapi.arena.model;
 
-
-import com.github.tehsteel.minigameapi.MiniGameLib;
-import com.github.tehsteel.minigameapi.arena.ArenaException;
-import com.github.tehsteel.minigameapi.arena.ArenaState;
-import com.github.tehsteel.minigameapi.util.CustomLocation;
+import com.google.gson.Gson;
+import dev.tehsteel.minigameapi.MiniGameLib;
+import dev.tehsteel.minigameapi.api.arena.ArenaCreateEvent;
+import dev.tehsteel.minigameapi.api.arena.ArenaDeleteEvent;
+import dev.tehsteel.minigameapi.api.arena.model.ArenaEvent;
+import dev.tehsteel.minigameapi.arena.ArenaException;
+import dev.tehsteel.minigameapi.arena.ArenaState;
+import dev.tehsteel.minigameapi.util.CustomLocation;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -16,20 +19,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@Getter
 public class Arena {
 
-	@Getter private final String name;
-	@Getter @Setter private Location waitingLocation;
-	@Getter @Setter private int maxPlayers;
-	@Getter @Setter private int minPlayers;
-	@Getter @Setter private ArenaState state = ArenaState.READY;
-	@Getter @Setter private Set<Location> spawnLocations = new HashSet<>();
+	private final String name;
+	@Setter private Location waitingLocation;
+	@Setter private int maxPlayers;
+	@Setter private int minPlayers;
+	@Setter private ArenaState state = ArenaState.READY;
+	@Setter private Set<Location> spawnLocations = new HashSet<>();
 
-	@Getter private File configFile;
-	@Getter private YamlConfiguration config = new YamlConfiguration();
+	private File configFile;
+	private YamlConfiguration config = new YamlConfiguration();
 
 	/**
 	 * Creates a new Arena with the specified name.
@@ -39,6 +42,8 @@ public class Arena {
 	 */
 	public Arena(final String name) {
 		this.name = name;
+
+		fireArenaEvent(new ArenaCreateEvent(this));
 
 		try {
 			createArenaFile();
@@ -62,6 +67,8 @@ public class Arena {
 		this.configFile = arena.configFile;
 		this.config = arena.config;
 
+		fireArenaEvent(new ArenaCreateEvent(this));
+
 		try {
 			createArenaFile();
 		} catch (final ArenaException e) {
@@ -84,6 +91,9 @@ public class Arena {
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
 
+
+		fireArenaEvent(new ArenaCreateEvent(this));
+
 		try {
 			createArenaFile();
 		} catch (final ArenaException e) {
@@ -97,12 +107,21 @@ public class Arena {
 	 * @param config The FileConfiguration object containing the serialized Arena data.
 	 * @return The deserialized Arena.
 	 */
-	public static Arena deserialize(final FileConfiguration config) {
+	public static Arena deserialize(final FileConfiguration config) throws ArenaException {
+		final Gson gson = MiniGameLib.getGson();
+
+		if (config == null) {
+			throw new ArenaException("The config hasn't been initialized yet.");
+		}
+
+		if (config.getString("ArenaData.name") == null || config.getString("ArenaData.name").isEmpty()) {
+			throw new ArenaException("The arena data named does not exist.");
+		}
 
 		final Arena arena = new Arena(config.getString("ArenaData.name"));
 
 		if (config.getString("ArenaData.waitingLocation") != null)
-			arena.setWaitingLocation(CustomLocation.deserialize(Objects.requireNonNull(config.getString("ArenaData.waitingLocation"))).toBukkitLocation());
+			arena.setWaitingLocation(gson.fromJson(config.getString("ArenaData.waitingLocation"), CustomLocation.class).toBukkitLocation());
 
 		arena.setMaxPlayers(config.getInt("ArenaData.maxPlayers"));
 		arena.setMinPlayers(config.getInt("ArenaData.minPlayers"));
@@ -111,7 +130,7 @@ public class Arena {
 
 		if (section != null) {
 			for (int i = 0; i < section.getKeys(false).size(); i++) {
-				arena.getSpawnLocations().add(CustomLocation.deserialize(Objects.requireNonNull(section.getString(String.valueOf(i)))).toBukkitLocation());
+				arena.getSpawnLocations().add(gson.fromJson(section.getString(String.valueOf(i)), CustomLocation.class).toBukkitLocation());
 			}
 		}
 
@@ -135,6 +154,7 @@ public class Arena {
 	 * Deletes the arena configuration file from the file system.
 	 */
 	public void deleteArenaConfig() {
+		fireArenaEvent(new ArenaDeleteEvent(this));
 		configFile.delete();
 	}
 
@@ -155,27 +175,20 @@ public class Arena {
 	 * @throws ArenaException If an error occurs during the creation or loading process.
 	 */
 	private void createArenaFile() throws ArenaException {
-
-		// Define the file path for the arena configuration file
 		configFile = new File(MiniGameLib.getPlugin().getDataFolder() + "/arenas", name + ".yml");
 
-		// If the configuration file does not exist, create a new one
 		if (!configFile.exists()) {
-
-			// Ensure the parent directory exists; create if necessary
 			if (!configFile.getParentFile().exists() && !configFile.getParentFile().mkdirs()) {
-				throw new ArenaException("Failed to create 'arenas' directory.");
+				throw new ArenaException("Failed to create arenas directory.");
 			}
 
 			try {
-				// Create a new file and load the configuration
 				configFile.createNewFile();
 				config.load(configFile);
 			} catch (IOException | InvalidConfigurationException e) {
 				throw new ArenaException("Failed to create arena file: " + e.getMessage());
 			}
 		} else {
-			// Load the existing configuration file
 			try {
 				config.load(configFile);
 			} catch (IOException | InvalidConfigurationException e) {
@@ -190,10 +203,11 @@ public class Arena {
 	 * @throws ArenaException If an error occurs during the serialization process.
 	 */
 	public void serialize() throws ArenaException {
+		final Gson gson = MiniGameLib.getGson();
 		config.set("ArenaData.name", name);
 
 		if (waitingLocation != null) {
-			config.set("ArenaData.waitingLocation", waitingLocation.serialize());
+			config.set("ArenaData.waitingLocation", gson.toJson(CustomLocation.fromBukkitLocation(waitingLocation), CustomLocation.class));
 		}
 
 		config.set("ArenaData.maxPlayers", maxPlayers);
@@ -201,9 +215,14 @@ public class Arena {
 
 		if (spawnLocations != null && !spawnLocations.isEmpty()) {
 			for (int i = 0; i < spawnLocations.size(); i++) {
-				config.set("ArenaData.spawnLocations." + i, spawnLocations.stream().toList().get(i).serialize());
+				config.set("ArenaData.spawnLocations." + i, gson.toJson(CustomLocation.fromBukkitLocation(spawnLocations.stream().toList().get(i)), CustomLocation.class));
 			}
 		}
 		saveConfig();
+	}
+
+	private <T extends ArenaEvent> void fireArenaEvent(final T event) {
+		if (event.isCancelled()) return;
+		MiniGameLib.getPlugin().getServer().getPluginManager().callEvent(event);
 	}
 }

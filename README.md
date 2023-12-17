@@ -24,13 +24,13 @@ You may need to compile it from the source before using it.
 		</repository>
 	</repositories>
 
-        <dependency>
-            <groupId>com.github.tehsteel</groupId>
-            <artifactId>minigameapi</artifactId>
-            <!-- Make sure it's up-to-date -->
-            <version>VERSION</version>
-            <scope>compile</scope>
-        </dependency>
+    <dependency>
+        <groupId>dev.tehsteel</groupId>
+        <artifactId>minigameapi</artifactId>
+        <!-- Make sure it's up-to-date -->
+        <version>VERSION</version>
+        <scope>compile</scope>
+    </dependency>
 ```
 
 ### Initialize the Library

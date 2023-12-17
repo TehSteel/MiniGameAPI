@@ -1,6 +1,6 @@
-package com.github.tehsteel.minigameapi.api.game.model;
+package dev.tehsteel.minigameapi.api.arena.model;
 
-import com.github.tehsteel.minigameapi.game.model.Game;
+import dev.tehsteel.minigameapi.arena.model.Arena;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,10 +10,10 @@ import org.bukkit.event.HandlerList;
 
 @Getter
 @RequiredArgsConstructor
-public class GameEvent extends Event implements Cancellable {
+public class ArenaEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS = new HandlerList();
 
-	private final Game game;
+	private final Arena arena;
 	@Setter private boolean cancelled;
 
 	public static HandlerList getHandlerList() {
@@ -24,6 +24,4 @@ public class GameEvent extends Event implements Cancellable {
 	public HandlerList getHandlers() {
 		return HANDLERS;
 	}
-
-
 }
