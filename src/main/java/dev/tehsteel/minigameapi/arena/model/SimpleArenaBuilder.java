@@ -1,6 +1,6 @@
-package dev.tehsteel.minigameapi.arena;
+package dev.tehsteel.minigameapi.arena.model;
 
-import dev.tehsteel.minigameapi.arena.model.Arena;
+import dev.tehsteel.minigameapi.arena.ArenaState;
 import org.bukkit.Location;
 
 import java.util.HashSet;
