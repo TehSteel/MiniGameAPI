@@ -2,6 +2,7 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 ![Java Version](https://img.shields.io/badge/Java-17%2B-blue.svg)
 [![Java CI with Maven](https://github.com/TehSteel/MiniGameAPI/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/TehSteel/MiniGameAPI/actions/workflows/maven.yml)
+[![](https://jitpack.io/v/tehsteel/minigameapi.svg)](https://jitpack.io/#tehsteel/minigameapi)
 
 > MiniGameAPI Java library designed to simplify the development of mini-games within Minecraft plugins.
 
