@@ -1,13 +1,13 @@
-package dev.tehsteel.minigameapi.arena.model;
+package dev.tehsteel.minigameapi.arena;
 
-import dev.tehsteel.minigameapi.arena.ArenaState;
+import dev.tehsteel.minigameapi.arena.model.Arena;
 import org.bukkit.Location;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A builder class for constructing Arena easily with various properties.
+ * A builder class for constructing Arena easily.
  */
 public final class SimpleArenaBuilder {
 	private final String name;
@@ -17,11 +17,6 @@ public final class SimpleArenaBuilder {
 	private ArenaState state = ArenaState.READY;
 	private Set<Location> spawnLocations = new HashSet<>();
 
-	/**
-	 * Private constructor for SimpleArenaBuilder.
-	 *
-	 * @param name The name of the arena.
-	 */
 	private SimpleArenaBuilder(final String name) {
 		this.name = name;
 	}
@@ -111,9 +106,10 @@ public final class SimpleArenaBuilder {
 	/**
 	 * Builds and returns the configured Arena object.
 	 *
-	 * @return The constructed Arena object.
+	 * @return {@link Arena} The constructed Arena object.
+	 * @throws ArenaException If an error occurs during the build process.
 	 */
-	public Arena build() {
+	public Arena build() throws ArenaException {
 		final Arena arena = new Arena(name);
 
 		arena.setWaitingLocation(waitingLocation);

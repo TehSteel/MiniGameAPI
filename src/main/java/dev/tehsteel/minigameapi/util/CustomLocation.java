@@ -16,7 +16,7 @@ public record CustomLocation(String world, double x, double y, double z, float y
 	}
 
 	public static CustomLocation fromBukkitLocation(final Location location) {
-		if (location == null) {
+		if (location == null || location.getWorld() == null) {
 			throw new RuntimeException("Location hasn't been initialized.");
 		}
 		return new CustomLocation(location.getWorld().getName(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());

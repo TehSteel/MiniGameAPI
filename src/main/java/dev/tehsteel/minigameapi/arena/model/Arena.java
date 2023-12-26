@@ -21,6 +21,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The Arena class represents an arena object.
+ */
 @Getter
 public class Arena {
 
@@ -38,27 +41,23 @@ public class Arena {
 	 * Creates a new Arena with the specified name.
 	 *
 	 * @param name The name of the arena.
-	 * @throws RuntimeException If an ArenaException occurs during arena file creation.
+	 * @throws ArenaException If an ArenaException occurs during arena file creation.
 	 */
-	public Arena(final String name) {
+	public Arena(final String name) throws ArenaException {
 		this.name = name;
 
 		fireArenaEvent(new ArenaCreateEvent(this));
 
-		try {
-			createArenaFile();
-		} catch (final ArenaException e) {
-			throw new RuntimeException(e);
-		}
+		createArenaFile();
 	}
 
 	/**
 	 * Creates a new Arena by copying attributes from an existing Arena.
 	 *
 	 * @param arena The existing Arena to copy attributes from.
-	 * @throws RuntimeException If an ArenaException occurs during arena file creation.
+	 * @throws ArenaException If an ArenaException occurs during arena file creation.
 	 */
-	public Arena(final Arena arena) {
+	public Arena(final Arena arena) throws ArenaException {
 		this.name = arena.name;
 		this.waitingLocation = arena.waitingLocation;
 		this.maxPlayers = arena.maxPlayers;
@@ -69,11 +68,7 @@ public class Arena {
 
 		fireArenaEvent(new ArenaCreateEvent(this));
 
-		try {
-			createArenaFile();
-		} catch (final ArenaException e) {
-			throw new RuntimeException(e);
-		}
+		createArenaFile();
 	}
 
 	/**
@@ -83,22 +78,17 @@ public class Arena {
 	 * @param waitingLocation The waiting location for players.
 	 * @param maxPlayers      The maximum number of players allowed in the arena.
 	 * @param minPlayers      The minimum number of players required to start the game.
-	 * @throws RuntimeException If an ArenaException occurs during arena file creation.
+	 * @throws ArenaException If an ArenaException occurs during arena file creation.
 	 */
-	public Arena(final String name, final Location waitingLocation, final int maxPlayers, final int minPlayers) {
+	public Arena(final String name, final Location waitingLocation, final int maxPlayers, final int minPlayers) throws ArenaException {
 		this.name = name;
 		this.waitingLocation = waitingLocation;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
 
-
 		fireArenaEvent(new ArenaCreateEvent(this));
 
-		try {
-			createArenaFile();
-		} catch (final ArenaException e) {
-			throw new RuntimeException(e);
-		}
+		createArenaFile();
 	}
 
 	/**

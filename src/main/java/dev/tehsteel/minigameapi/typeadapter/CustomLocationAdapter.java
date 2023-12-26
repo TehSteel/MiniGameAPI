@@ -7,7 +7,7 @@ import dev.tehsteel.minigameapi.util.CustomLocation;
 
 import java.io.IOException;
 
-public class CustomLocationAdapter extends TypeAdapter<CustomLocation> {
+public final class CustomLocationAdapter extends TypeAdapter<CustomLocation> {
 	@Override
 	public void write(final JsonWriter out, final CustomLocation customLocation) throws IOException {
 		out.beginObject();
@@ -23,7 +23,7 @@ public class CustomLocationAdapter extends TypeAdapter<CustomLocation> {
 	@Override
 	public CustomLocation read(final JsonReader in) throws IOException {
 		String world = "world";
-		double x = 0, y = 0, z = 0;
+		double x = 0.0, y = 0.0, z = 0.0;
 		float yaw = 0, pitch = 0;
 
 		in.beginObject();
@@ -52,7 +52,7 @@ public class CustomLocationAdapter extends TypeAdapter<CustomLocation> {
 					break;
 			}
 		}
-		
+
 		in.endObject();
 		return new CustomLocation(world, x, y, z, yaw, pitch);
 	}

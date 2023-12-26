@@ -8,6 +8,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * Represents an event related to an arena.
+ * This event is used within the context of an arena events execution.
+ */
 @Getter
 @RequiredArgsConstructor
 public class ArenaEvent extends Event implements Cancellable {
