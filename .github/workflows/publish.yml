@@ -1,13 +1,13 @@
-name: "tagged-release"
+name: Tagged Release
 
 on:
   push:
     tags:
-      - "v*"
+      - 'v*' # Trigger workflow on tag creation like v1.0.0
 
 jobs:
   build:
-    name: "Tagged Release"
+    name: Tagged Release
     runs-on: ubuntu-latest
 
     steps:
@@ -17,12 +17,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
+
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
       - name: Create and Upload Release
-        uses: "marvinpinto/action-automatic-releases@latest"
-          with:
-            repo_token: "${{ secrets.GIT_TOKEN }}"
-            prerelease: false
-            files: "minigameapi-*.jar"
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          prerelease: false
+          files: 'target/minigameapi-*.jar' # Replace with your artifact name/pattern
